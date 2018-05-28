@@ -22,6 +22,32 @@ void Deck::print_deck()
     }
 }
 
+void Deck::random_shuffle()
+{
+    random_device rd;
+    mt19937 marsenne(rd());
+    shuffle(this->deck.begin(), this->deck.end(), marsenne);
+}
+
+Card Deck::get_card_top()
+{
+    Card c = this->deck.back();
+    this->deck.pop_back();
+    return c;
+}
+
+Card Deck::get_card_bottom()
+{
+    Card c = this->deck.front();
+    this->deck.erase(this->deck.begin());
+    return c;
+}
+
+unsigned int Deck::get_total_quatity()
+{
+    return this->deck.size();
+}
+
 Deck::~Deck()
 {
     this->deck.clear();
