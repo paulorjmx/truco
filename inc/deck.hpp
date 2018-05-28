@@ -2,6 +2,8 @@
     #define DECK_HPP
         #include "card.hpp"
         #include <iostream>
+        #include <algorithm>
+        #include <random>
         #include <vector>
 
         using namespace std;
@@ -14,8 +16,10 @@
             public:
                 Deck();
                 ~Deck();
-                // void shuffle();
+                void random_shuffle();
                 void print_deck();
-                Card get_random_card();
+                unsigned int get_total_quatity();
+                Card get_card_top();
+                Card get_card_bottom();
         };
 #endif
