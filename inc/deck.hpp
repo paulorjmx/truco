@@ -12,6 +12,7 @@
         {
             private:
                  vector<Card> deck;
+                 bool shuffled;
 
             public:
                 Deck();
@@ -19,6 +20,7 @@
                 void random_shuffle();
                 void print_deck();
                 unsigned int get_total_quatity();
+                bool had_shuffled()
                 Card get_card_top();
                 Card get_card_bottom();
         };
