@@ -2,6 +2,7 @@
 
 Deck::Deck()
 {
+    this->shuffled = false;
     this->deck.reserve(40);
     char symbols[10] = { 'A', '2', '3', '4', '5', '6', '7', 'Q', 'J', 'K' };
     char naipes[4] = { 'c', 'e', 'o', 'p'}; // Copa, Espada, Ouros e Paus
@@ -41,6 +42,11 @@ Card Deck::get_card_bottom()
     Card c = this->deck.front();
     this->deck.erase(this->deck.begin());
     return c;
+}
+
+bool Deck::had_shuffled()
+{
+    return this->shuffled;
 }
 
 unsigned int Deck::get_total_quatity()
