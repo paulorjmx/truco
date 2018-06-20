@@ -31,10 +31,11 @@ void UserInterface::text_box(string text)
     }
 }
 
-void UserInterface::menu_box(unsigned int items, string *content)
+int UserInterface::menu_box(unsigned int items, string *content)
 {
     for(int i = 0; i < items; i++)
     {
         cout << "[" << i << "] " << content[i] << endl;
     }
+
 }
