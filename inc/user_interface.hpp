@@ -9,8 +9,9 @@
         {
             public:
                 UserInterface();
-                void menu_title_bar(const string title);
+                void title_bar(const string title);
                 void text_box(string text);
-                void ui_container(const string content);
+                void menu_box(unsigned int items, string *contents);
+
         };
 #endif
