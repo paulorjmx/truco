@@ -11,7 +11,6 @@
                 UserInterface();
                 void title_bar(const string title);
                 void text_box(string text);
-                void menu_box(unsigned int items, string *contents);
-
+                int menu_box(unsigned int items, string *contents);
         };
 #endif
