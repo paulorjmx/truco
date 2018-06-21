@@ -1,5 +1,6 @@
 #include "inc/user_interface.hpp"
 #include <iomanip>
+#include <cstdlib>
 
 #define CENTER 30
 #define LEFT 10
@@ -13,7 +14,7 @@ void UserInterface::title_bar(const string title)
     cout << setfill(' ') << setw(CENTER) << "|" << setw(title.length() + 5) << "|" << endl;
     cout << setw(CENTER + 2) << "|  " << title << "  |" << endl;
     cout << setw(CENTER) << "|" << setfill(' ') << setw(title.length() + 5) << "|" << endl;
-    cout << setw(CENTER) << "+" << setfill('-') << setw(title.length() + 5) << "+" << endl;
+    cout << setw(CENTER) << "+" << setfill('-') << setw(title.length() + 5) << "+" << endl << endl;
 }
 
 void UserInterface::text_box(string text)
@@ -24,18 +25,33 @@ void UserInterface::text_box(string text)
     {
         if((i * RIGHT) < text.length())
         {
-            cout << setw(LEFT + text.substr((i * RIGHT), RIGHT).length()) << text.substr((i * RIGHT), RIGHT) << endl;
+            cout << setfill(' ') << setw(CENTER + text.substr((i * RIGHT), RIGHT).length() - 1) << text.substr((i * RIGHT), RIGHT) << endl;
         }
         it += (i * RIGHT);
         i++;
     }
+    cout << endl;
 }
 
 int UserInterface::menu_box(unsigned int items, string *content)
 {
+    int choice = -1;
     for(int i = 0; i < items; i++)
     {
-        cout << "[" << i << "] " << content[i] << endl;
+        cout << setfill(' ') << setw(CENTER) << "[" << i << "] " << content[i] << endl;
     }
+    cout << endl << setw(CENTER + 17) << "Enter the choice: ";
+    cin >> choice;
+    return choice;
+}
 
+void UserInterface::clear_screen()
+{
+    #ifdef _WIN32
+        system("cls");
+    #endif
+
+    #ifdef __linux__
+        system("clear");
+    #endif
 }
