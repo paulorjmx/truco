@@ -1,5 +1,11 @@
 #include "inc/card.hpp"
 
+Card::Card()
+{
+    this->symbol = "";
+    this->naipe = "";
+}
+
 Card::Card(char symbol, char naipe)
 {
     this->symbol = symbol;
