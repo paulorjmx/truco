@@ -7,6 +7,7 @@
                 char symbol, naipe;
 
             public:
+                Card();
                 Card(char symbol, char naipe);
                 Card(const Card &card);
                 char get_symbol();
