@@ -2,16 +2,17 @@
     #define PLAYER_HPP
         #include "card.hpp"
 
-        // enum Team { TeamOne, TeamTwo };
         class Player
         {
             private:
                 string name;
                 vector<Card> mao;
-                // Team t;
 
             public:
+                Player();
                 Player(string name);
+                void set_name(string name);
+                string get_name();
                 void set_cards(Card c);
                 Card get_card(unsigned int position);
                 ~Player();
