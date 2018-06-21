@@ -22,10 +22,11 @@ string Player::get_name()
     return this->name;
 }
 
-// Player std::istream &operator>>(std::istream &is, Card &obj)
-// {
-//     cin >> obj->name;
-// }
+istream &operator>>(istream &is, Player &obj)
+{
+    cin >> obj.name;
+    return is;
+}
 
 void Player::set_cards(Card c)
 {
