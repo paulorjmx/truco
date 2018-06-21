@@ -6,6 +6,22 @@ Player::Player(string name)
     this->mao.reserve(3);
 }
 
+Player::Player()
+{
+    this->name = "Unknown";
+    this->mao.reserve(3);
+}
+
+void set_name(string name)
+{
+    this->name = name;
+}
+
+string get_name()
+{
+    return this->name;
+}
+
 void Player::set_cards(Card c)
 {
     if(this->mao.size() < 3)
