@@ -12,15 +12,20 @@ Player::Player()
     this->mao.reserve(3);
 }
 
-void set_name(string name)
+void Player::set_name(string name)
 {
     this->name = name;
 }
 
-string get_name()
+string Player::get_name()
 {
     return this->name;
 }
+
+// Player std::istream &operator>>(std::istream &is, Card &obj)
+// {
+//     cin >> obj->name;
+// }
 
 void Player::set_cards(Card c)
 {
