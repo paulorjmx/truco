@@ -2,8 +2,8 @@
 
 Card::Card()
 {
-    this->symbol = "";
-    this->naipe = "";
+    this->symbol = '0';
+    this->naipe = '0';
 }
 
 Card::Card(char symbol, char naipe)
