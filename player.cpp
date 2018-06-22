@@ -22,6 +22,19 @@ string Player::get_name()
     return this->name;
 }
 
+string Player::display_card(unsigned int position)
+{
+    string output;
+    output.push_back(this->mao[position].get_symbol());
+    output.push_back(this->mao[position].get_naipe());
+    return output;
+}
+
+unsigned int Player::card_quantity()
+{
+    return this->mao.size();
+}
+
 istream &operator>>(istream &is, Player &obj)
 {
     cin >> obj.name;
