@@ -14,7 +14,9 @@
             public:
                 Team();
                 Team(string player1_name, string player2_name);
-                void set_points(const unsigned int points);
+                void set_points(unsigned int points);
+                void set_card(unsigned int player_num, Card c);
+                Card get_card(unsigned int player_num, unsigned int card_position);
                 unsigned int get_points();
                 void display_player_name(unsigned int player_num);
                 friend istream &operator>>(istream &is, Team &obj);
