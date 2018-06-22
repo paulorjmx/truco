@@ -10,7 +10,7 @@ UserInterface::UserInterface() { }
 
 void UserInterface::title_bar(const string title)
 {
-    cout << setw(CENTER) << "+" << setfill('-') << setw(title.length() + 5) << "+" << endl;
+    cout << setfill(' ') << setw(CENTER) << "+" << setfill('-') << setw(title.length() + 5) << "+" << endl;
     cout << setfill(' ') << setw(CENTER) << "|" << setw(title.length() + 5) << "|" << endl;
     cout << setw(CENTER + 2) << "|  " << title << "  |" << endl;
     cout << setw(CENTER) << "|" << setfill(' ') << setw(title.length() + 5) << "|" << endl;
