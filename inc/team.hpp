@@ -19,6 +19,7 @@
                 Card get_card(unsigned int player_num, unsigned int card_position);
                 unsigned int get_points();
                 void display_player_name(unsigned int player_num);
+                string display_player_card(unsigned int player_num);
                 friend istream &operator>>(istream &is, Team &obj);
                 ~Team();
         };
