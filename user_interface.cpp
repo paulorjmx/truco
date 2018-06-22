@@ -45,6 +45,23 @@ int UserInterface::menu_box(unsigned int items, string *content)
     return choice;
 }
 
+void UserInterface::menu_choose_card(string cards)
+{
+    int pos = 0, qt_cards = 0;
+    while(pos < cards.length())
+    {
+        pos = cards.find(";", pos) + 1;
+        qt_cards++;
+    }
+    pos = 0;
+    cout << setfill(' ') << setw(CENTER) << "[0] " << cards.substr(pos, 2) << endl;
+    for(int i = 1; i < qt_cards; i++)
+    {
+        pos = cards.find(";", pos) + 1;
+        cout << setfill(' ') << setw(CENTER) << "[" << i << "] " << cards.substr(pos, 2) << endl;
+    }
+}
+
 void UserInterface::clear_screen()
 {
     #ifdef _WIN32
