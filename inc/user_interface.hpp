@@ -12,6 +12,7 @@
                 void title_bar(const string title);
                 void text_box(string text);
                 int menu_box(unsigned int items, string *contents);
+                void menu_choose_card(string cards);
                 void clear_screen();
         };
 #endif
