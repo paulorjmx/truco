@@ -32,6 +32,17 @@ unsigned int Team::get_points()
     return this->points;
 }
 
+string Team::display_player_card(unsigned int player_num)
+{
+    string cards;
+    for(int i = 0; i < this->players[player_num].card_quantity(); i++)
+    {
+        cards += this->players[player_num].display_card(i);
+        cards += ";";
+    }
+    return cards;
+}
+
 istream &operator>>(istream &is, Team &obj)
 {
     cin >> obj.players[0];
