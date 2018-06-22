@@ -17,6 +17,7 @@
             public:
                 Deck();
                 ~Deck();
+                void create();
                 void random_shuffle();
                 void print_deck();
                 unsigned int get_total_quatity();
