@@ -47,7 +47,7 @@ int UserInterface::menu_box(unsigned int items, string *content)
 
 void UserInterface::menu_choose_card(string cards)
 {
-    int pos = 0, qt_cards = 0;
+    int pos = 0, qt_cards = 0, i = 0;
     while(pos < cards.length())
     {
         pos = cards.find(";", pos) + 1;
@@ -55,7 +55,7 @@ void UserInterface::menu_choose_card(string cards)
     }
     pos = 0;
     cout << setfill(' ') << setw(CENTER) << "[0] " << cards.substr(pos, 2) << endl;
-    for(int i = 1; i < qt_cards; i++)
+    for(i = 1; i < qt_cards; i++)
     {
         pos = cards.find(";", pos) + 1;
         cout << setfill(' ') << setw(CENTER) << "[" << i << "] " << cards.substr(pos, 2) << endl;
