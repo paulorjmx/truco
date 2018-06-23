@@ -2,13 +2,32 @@
 
 Card::Card()
 {
-    this->symbol = '0';
-    this->naipe = '0';
+    this->symbol = -1;
+    this->naipe = PAUS;
 }
 
-Card::Card(char symbol, char naipe)
+Card::Card(char symbol, Naipe naipe)
 {
-    this->symbol = symbol;
+    if(symbol == 'A')
+    {
+        this->symbol = 1;
+    }
+    else if(symbol == 'Q')
+    {
+        this->symbol = 8;
+    }
+    else if(this->symbol == 'J')
+    {
+        this->symbol = 9;
+    }
+    else if(this->symbol == 'K')
+    {
+        this->symbol = 10;
+    }
+    else
+    {
+        this->symbol = (0x000F & symbol);
+    }
     this->naipe = naipe;
 }
 
@@ -18,17 +37,86 @@ Card::Card(const Card &card)
     this->naipe = card.naipe;
 }
 
-char Card::get_symbol()
+void Card::clear()
 {
-    return this->symbol;
+    this->symbol = -1;
+    this->naipe = PAUS;
 }
 
-char Card::get_naipe()
+bool Card::operator==(const Card &c) const
+{
+    bool r = false;
+    if(c.symbol == this->symbol)
+    {
+        if(c.naipe == this->naipe)
+        {
+            r = true;
+        }
+    }
+    return r;
+}
+
+char Card::print_symbol()
+{
+    char tmp_symbol = 0x00;
+    if(this->symbol == 1)
+    {
+        tmp_symbol = 'A';
+    }
+    else if(this->symbol == 8)
+    {
+        tmp_symbol = 'Q';
+    }
+    else if(this->symbol == 9)
+    {
+        tmp_symbol = 'J';
+    }
+    else if(this->symbol == 10)
+    {
+        tmp_symbol = 'K';
+    }
+    else
+    {
+        tmp_symbol = (this->symbol | 0x30);
+    }
+    return tmp_symbol;
+}
+
+Card::Naipe Card::get_naipe()
 {
     return this->naipe;
 }
 
+char Card::print_naipe()
+{
+    char s;
+    switch(this->naipe)
+    {
+        case PAUS:
+            s = 'p';
+            break;
+
+        case COPAS:
+            s = 'c';
+            break;
+
+        case ESPADA:
+            s = 'e';
+            break;
+
+        case OUROS:
+            s = 'o';
+            break;
+    }
+    return s;
+}
+
+short int Card::get_symbol()
+{
+    return this->symbol;
+}
+
 Card::~Card()
 {
-
+    this->clear();
 }
