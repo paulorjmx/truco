@@ -5,7 +5,7 @@ Deck::Deck()
     this->shuffled = false;
     this->deck.reserve(40);
     char symbols[10] = { 'A', '2', '3', '4', '5', '6', '7', 'Q', 'J', 'K' };
-    char naipes[4] = { 'c', 'e', 'o', 'p'}; // Copa, Espada, Ouros e Paus
+    Card::Naipe naipes[4] = { Card::COPAS, Card::ESPADA, Card::OUROS, Card::PAUS}; // Copa, Espada, Ouros e Paus
     for(int i = 0; i < 10; i++)
     {
         for(int j = 0; j < 4; j++)
@@ -21,7 +21,7 @@ void Deck::create()
     this->deck.clear();
     this->deck.reserve(40);
     char symbols[10] = { 'A', '2', '3', '4', '5', '6', '7', 'Q', 'J', 'K' };
-    char naipes[4] = { 'c', 'e', 'o', 'p'}; // Copa, Espada, Ouros e Paus
+    Card::Naipe naipes[4] = { Card::COPAS, Card::ESPADA, Card::OUROS, Card::PAUS}; // Copa, Espada, Ouros e Paus
     for(int i = 0; i < 10; i++)
     {
         for(int j = 0; j < 4; j++)
@@ -35,7 +35,7 @@ void Deck::print_deck()
 {
     for(vector<Card>::iterator it = this->deck.begin(); it < this->deck.end(); it++)
     {
-        cout << (*it).get_symbol() << " " << (*it).get_naipe() << endl;
+        cout << (*it).print_symbol() << " " << (*it).print_naipe() << endl;
     }
 }
 
