@@ -102,7 +102,7 @@ int main(int argc, char const *argv[])
                                 {
                                     trucado = true;
                                     rises++;
-                                    while((rises * 3) < 12 && player_choose >= 4) // Enquanto aumentar os pontos
+                                    while((rises * 3) < 12) // Enquanto aumentar os pontos
                                     {
                                         cpu_choice = rd() % 3;
                                         if(cpu_choice == 1)
@@ -111,6 +111,7 @@ int main(int argc, char const *argv[])
                                             ui.title_bar("Truco++");
                                             ui.text_box("The oppponent accpeted the truco!");
                                             this_thread::sleep_for(chrono::seconds(2));
+                                            break;
                                         }
                                         else if(cpu_choice == 2)
                                         {
@@ -119,8 +120,12 @@ int main(int argc, char const *argv[])
                                             ui.title_bar("Truco++");
                                             ui.text_box("The opponent rises truco. What you do?");
                                             player_choose = ui.menu_box(3, what_do);
-                                            player_choose += 4;
-                                            if(player_choose == 5)
+                                            if(player_choose == 1)
+                                            {
+                                                rises++;
+                                                break;
+                                            }
+                                            else if(player_choose == 2)
                                             {
                                                 rises++;
                                             }
@@ -151,29 +156,50 @@ int main(int argc, char const *argv[])
                             }
                             else if((next_player % 4) == 1)
                             {
-                                cpu_choice = rd() % 4;
-                                if(cpu_choice < 3)
+                                if(teams[1].remaining_cards(1) > 0)
                                 {
-                                    m.set_card(teams[1].get_card(0, cpu_choice), 1);
-                                    next_player++;
+                                    cpu_choice = rd() % teams[1].remaining_cards(0);
+                                    if(cpu_choice < 3)
+                                    {
+                                        m.set_card(teams[1].get_card(0, cpu_choice), 2);
+                                        next_player++;
+                                    }
+                                }
+                                else
+                                {
+                                    m.set_card(teams[1].get_card(0, 0), 2);
                                 }
                             }
                             else if((next_player % 4) == 2) // Vez do parceiro de player
                             {
-                                cpu_choice = rd() % 4;
-                                if(cpu_choice < 3)
+                                if(teams[0].remaining_cards(1) > 0)
                                 {
-                                    m.set_card(teams[0].get_card(1, cpu_choice), 2);
-                                    next_player++;
+                                    cpu_choice = rd() % teams[0].remaining_cards(1);
+                                    if(cpu_choice < 3)
+                                    {
+                                        m.set_card(teams[0].get_card(1, cpu_choice), 2);
+                                        next_player++;
+                                    }
+                                }
+                                else
+                                {
+                                    m.set_card(teams[0].get_card(1, 0), 2);
                                 }
                             }
                             else
                             {
-                                cpu_choice = rd() % 4;
-                                if(cpu_choice < 3)
+                                if(teams[1].remaining_cards(1) > 0)
                                 {
-                                    m.set_card(teams[1].get_card(1, cpu_choice), 3);
-                                    next_player++;
+                                    cpu_choice = rd() % teams[1].remaining_cards(1);
+                                    if(cpu_choice < 3)
+                                    {
+                                        m.set_card(teams[1].get_card(1, cpu_choice), 2);
+                                        next_player++;
+                                    }
+                                }
+                                else
+                                {
+                                    m.set_card(teams[1].get_card(1, 0), 2);
                                 }
                             }
                         }
@@ -187,11 +213,14 @@ int main(int argc, char const *argv[])
                             if((next_player % 2) == 0) // O time do jogador humano ganhou
                             {
                                 teams[0].set_points(points);
+                                cout << "You TEAM WIN TH TURN";
                             }
                             else
                             {
                                 teams[1].set_points(points);
+                                cout << "AWAY TEAM WIN TH TURN";
                             }
+                            this_thread::sleep_for(chrono::seconds(2));
                         }
                     }
                     break;
