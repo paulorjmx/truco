@@ -43,6 +43,7 @@ string Table::display_table()
     string output = "Vira ";
     output.push_back(this->vira.print_symbol());
     output.push_back(this->vira.print_naipe());
+    
     return output;
 }
 
