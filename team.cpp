@@ -43,6 +43,11 @@ string Team::display_player_card(unsigned int player_num)
     return cards;
 }
 
+unsigned int Team::remaining_cards(unsigned int player_num)
+{
+    return this->players[player_num].card_quantity();
+}
+
 istream &operator>>(istream &is, Team &obj)
 {
     cin >> obj.players[0];
