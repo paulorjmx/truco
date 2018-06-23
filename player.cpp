@@ -25,8 +25,8 @@ string Player::get_name()
 string Player::display_card(unsigned int position)
 {
     string output;
-    output.push_back(this->mao[position].get_symbol());
-    output.push_back(this->mao[position].get_naipe());
+    output.push_back(this->mao[position].print_symbol());
+    output.push_back(this->mao[position].print_naipe());
     return output;
 }
 
