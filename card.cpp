@@ -16,17 +16,17 @@ Card::Card(char symbol, Naipe naipe)
     {
         this->symbol = 8;
     }
-    else if(this->symbol == 'J')
+    else if(symbol == 'J')
     {
         this->symbol = 9;
     }
-    else if(this->symbol == 'K')
+    else if(symbol == 'K')
     {
         this->symbol = 10;
     }
     else
     {
-        this->symbol = (0x000F & symbol);
+        this->symbol = (symbol & 0x000F);
     }
     this->naipe = naipe;
 }
@@ -77,7 +77,7 @@ char Card::print_symbol()
     }
     else
     {
-        tmp_symbol = (this->symbol | 0x30);
+        tmp_symbol = (this->symbol | 0x0030);
     }
     return tmp_symbol;
 }
