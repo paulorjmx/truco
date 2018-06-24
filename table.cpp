@@ -1,4 +1,5 @@
 #include "inc/table.hpp"
+#include <iomanip>
 
 Table::Table()
 {
@@ -40,77 +41,85 @@ void Table::set_vira(Card c)
 
 string Table::display_table()
 {
-    string output = "Vira ";
-    output.push_back(this->vira.print_symbol());
-    output.push_back(this->vira.print_naipe());
-    
+    string output;
+    // output.push_back(this->vira.print_symbol());
+    // output.push_back(this->vira.print_naipe());
+    cout << setfill(' ') << setw(50) << "Vira " << this->vira.print_symbol() << this->vira.print_naipe() << endl;
+    for(int i = 0; i < 4; i++)
+    {
+        output.push_back(this->cards[i].print_symbol());
+        output.push_back(this->cards[i].print_naipe());
+        output += " ";
+    }
+
     return output;
 }
 
 int Table::calculate_round_winner()
 {
     Card tmp_best_card;
-    int tmp_winner = -1;
+    short int tmp_winner = 0, i = 1, manilha = 0;
+    if(this->vira.get_symbol() == 10) manilha = 1;
+    else manilha = (this->vira.get_symbol() + 1);
     tmp_best_card = this->cards[0];
-    for(int i = 1; i < 4; i++)
+    cout << manilha << endl;
+    while(i < 4)
     {
-        if(tmp_best_card.get_symbol() == (this->vira.get_symbol() + 1) && this->cards[i].get_symbol() == (this->vira.get_symbol() + 1))
+        if((tmp_best_card.get_symbol() == manilha) || (this->cards[i].get_symbol() == manilha))
         {
-            if(tmp_best_card.get_naipe() < this->cards[i].get_naipe())
+            cout << "manilha" << endl;
+            if((tmp_best_card.get_symbol() == manilha) && (this->cards[i].get_symbol() == manilha))
             {
-                tmp_best_card = this->cards[i];
+                if(tmp_best_card.get_naipe() < this->cards[i].get_naipe())
+                {
+                    tmp_winner = i;
+                    tmp_best_card = this->cards[i];
+                }
+            }
+            else if((this->cards[i].get_symbol() == manilha))
+            {
                 tmp_winner = i;
+                tmp_best_card = this->cards[i];
             }
         }
         else
         {
-            if(this->cards[i].get_symbol() == (this->vira.get_symbol() + 1))
-            {
-
-            }
-            else if(this->cards[i].get_symbol() == (this->vira.get_symbol() + 1))
-            {
-                tmp_best_card = this->cards[i];
-                tmp_winner = i;
-            }
-            else if((tmp_best_card.get_symbol() >= 1 && tmp_best_card.get_symbol() <= 3) || (this->cards[i].get_symbol() >= 1 && this->cards[i].get_symbol() <= 3))
+            if(tmp_best_card.get_symbol() >= 1 && tmp_best_card.get_symbol() <= 3)
             {
                 if(this->cards[i].get_symbol() >= 1 && this->cards[i].get_symbol() <= 3)
                 {
-                    if(tmp_best_card.get_symbol() >= 1 && tmp_best_card.get_symbol() <= 3)
+                    if(tmp_best_card.get_symbol() < this->cards[i].get_symbol())
                     {
-                        if(this->cards[i].get_symbol() > tmp_best_card.get_symbol())
-                        {
-                            tmp_best_card = this->cards[i];
-                            tmp_winner = i;
-                        }
-                        else if(this->cards[i].get_symbol() == tmp_best_card.get_symbol())
-                        {
-                            tmp_winner = -1;
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        tmp_best_card = this->cards[i];
                         tmp_winner = i;
+                        tmp_best_card = this->cards[i];
+                    }
+                    else if(tmp_best_card.get_symbol() == this->cards[i].get_symbol())
+                    {
+                        tmp_winner = -1;
+                        break;
                     }
                 }
             }
             else
             {
-                if(this->cards[i].get_symbol() > tmp_best_card.get_symbol())
+                if(this->cards[i].get_symbol() >= 1 && this->cards[i].get_symbol() <= 3)
                 {
-                    tmp_best_card = this->cards[i];
                     tmp_winner = i;
+                    tmp_best_card = this->cards[i];
                 }
-                else if(this->cards[i].get_symbol() == tmp_best_card.get_symbol())
+                else if(tmp_best_card.get_symbol() < this->cards[i].get_symbol())
+                {
+                    tmp_winner = i;
+                    tmp_best_card = this->cards[i];
+                }
+                else if(tmp_best_card.get_symbol() == this->cards[i].get_symbol())
                 {
                     tmp_winner = -1;
                     break;
                 }
             }
         }
+        i++;
     }
     this->clear();
     return tmp_winner;
