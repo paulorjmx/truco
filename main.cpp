@@ -75,7 +75,7 @@ int main(int argc, char const *argv[])
                     m.set_vira(baralho.get_card_top());
                     this_thread::sleep_for(chrono::seconds(1));
                     points = 1;
-                    while(round_over != true)
+                    while(round_over != true && partial_t1 < 2 && partial_t2 < 2)
                     {
                         if(m.get_cards_on() < 4)
                         {
@@ -84,7 +84,7 @@ int main(int argc, char const *argv[])
                                 ui.clear_screen();
                                 ui.title_bar("Truco++");
                                 ui.text_box("Cards in the table:");
-                                ui.text_box(m.display_table());
+                                // ui.text_box(m.display_table());
                                 ui.text_box("Choose one card below");
                                 ui.menu_choose_card(teams[0].display_player_card(0));
                                 if(trucado != true)
@@ -156,12 +156,12 @@ int main(int argc, char const *argv[])
                             }
                             else if((next_player % 4) == 1)
                             {
-                                if(teams[1].remaining_cards(1) > 0)
+                                if(teams[1].remaining_cards(0) > 0)
                                 {
                                     cpu_choice = rd() % teams[1].remaining_cards(0);
                                     if(cpu_choice < 3)
                                     {
-                                        m.set_card(teams[1].get_card(0, cpu_choice), 2);
+                                        m.set_card(teams[1].get_card(0, cpu_choice), 1);
                                         next_player++;
                                     }
                                 }
@@ -193,7 +193,7 @@ int main(int argc, char const *argv[])
                                     cpu_choice = rd() % teams[1].remaining_cards(1);
                                     if(cpu_choice < 3)
                                     {
-                                        m.set_card(teams[1].get_card(1, cpu_choice), 2);
+                                        m.set_card(teams[1].get_card(1, cpu_choice), 3);
                                         next_player++;
                                     }
                                 }
@@ -205,22 +205,32 @@ int main(int argc, char const *argv[])
                         }
                         else // Calcula o resultado da rodada
                         {
-                            if(trucado != true)
+                            if(trucado != false)
                             {
                                 points = (rises * 3);
                             }
+                            ui.text_box(m.display_table());
                             next_player = m.calculate_round_winner();
-                            if((next_player % 2) == 0) // O time do jogador humano ganhou
+                            if(next_player != -1)
                             {
-                                teams[0].set_points(points);
-                                cout << "You TEAM WIN TH TURN";
+                                if((next_player % 2) == 0)
+                                {
+                                    teams[0].set_points(points);
+                                    partial_t1++;
+                                    cout << "You TEAM WIN TH TURN";
+                                }
+                                else
+                                {
+                                    teams[1].set_points(points);
+                                    partial_t2++;
+                                    cout << "AWAY TEAM WIN TH TURN";
+                                }
                             }
                             else
                             {
-                                teams[1].set_points(points);
-                                cout << "AWAY TEAM WIN TH TURN";
+                                cout << "DRAW" << endl;
                             }
-                            this_thread::sleep_for(chrono::seconds(2));
+                            cin >> partial_t1;
                         }
                     }
                     break;
