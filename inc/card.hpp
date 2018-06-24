@@ -19,9 +19,9 @@
                 short int get_symbol();
                 Naipe get_naipe();
                 char print_naipe();
-                bool operator==(const Card &c) const;
+                Card &operator=(const Card &c);
                 ~Card();
-                
+
             private:
                 short int symbol;
                 Naipe naipe;
