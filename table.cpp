@@ -95,8 +95,25 @@ int Table::calculate_round_winner()
                     }
                     else if(tmp_best_card.get_symbol() == this->cards[i].get_symbol())
                     {
-                        tmp_winner = -1;
-                        break;
+                        if(tmp_winner == 0)
+                        {
+                            if(i != 2)
+                            {
+                                tmp_winner = -1;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if(tmp_winner == 1)
+                            {
+                                if(i != 3)
+                                {
+                                    tmp_winner = -1;
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -114,8 +131,25 @@ int Table::calculate_round_winner()
                 }
                 else if(tmp_best_card.get_symbol() == this->cards[i].get_symbol())
                 {
-                    tmp_winner = -1;
-                    break;
+                    if(tmp_winner == 0)
+                    {
+                        if(i != 2)
+                        {
+                            tmp_winner = -1;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if(tmp_winner == 1)
+                        {
+                            if(i != 3)
+                            {
+                                tmp_winner = -1;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
