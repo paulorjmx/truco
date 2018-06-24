@@ -43,17 +43,15 @@ void Card::clear()
     this->naipe = PAUS;
 }
 
-bool Card::operator==(const Card &c) const
+Card &Card::operator=(const Card &c)
 {
-    bool r = false;
-    if(c.symbol == this->symbol)
+    if(this == &c)
     {
-        if(c.naipe == this->naipe)
-        {
-            r = true;
-        }
+        return *this;
     }
-    return r;
+    symbol = c.symbol;
+    naipe = c.naipe;
+    return *this;
 }
 
 char Card::print_symbol()
