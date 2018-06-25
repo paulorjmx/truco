@@ -20,6 +20,7 @@
                 string get_name();
                 void set_cards(Card c);
                 Card get_card(unsigned int position);
+                Card show_card(unsigned int position);
                 string display_card(unsigned int position);
                 unsigned int card_quantity();
                 friend istream &operator>>(istream &is, Player &p);
