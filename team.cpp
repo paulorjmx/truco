@@ -1,4 +1,5 @@
 #include "inc/team.hpp"
+#include <iomanip>
 
 Team::Team()
 {
@@ -55,9 +56,9 @@ istream &operator>>(istream &is, Team &obj)
     return is;
 }
 
-void Team::display_player_name(unsigned int player_num)
+string Team::display_player_name(unsigned int player_num)
 {
-    cout << this->players[player_num].get_name();
+    return this->players[player_num].get_name();
 }
 
 Card Team::get_strongest_card(Card vira)
@@ -148,6 +149,8 @@ Card Team::get_strongest_card(Card vira)
 
     sc1 = this->get_card(0, position_1);
     sc2 = this->get_card(1, position_2);
+    cout << setfill(' ') << setw(30) << this->display_player_name(0) << ": " << sc1.print_symbol() << sc1.print_naipe() << endl;
+    cout << setfill(' ') << setw(30) << this->display_player_name(1) << ": " << sc2.print_symbol() << sc2.print_naipe() << endl;
     if(sc1.get_symbol() == manilha || sc2.get_symbol() == manilha)
     {
         if(sc1.get_symbol() == manilha && sc2.get_symbol() == manilha)
