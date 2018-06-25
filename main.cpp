@@ -17,6 +17,7 @@ int main(int argc, char const *argv[])
     Deck baralho;
     Table m;
     Team teams[2]; // Team[0] e o time do jogador humano
+    Card sc1, sc2; // Cartas mais fortes dos times 1 e 2, respectivamente, para a condicao de empate
     random_device rd;
     bool game_over = false, trucado = false, t1_first_blood = false, t1_give = false, t2_give = false;
     int cpu_choice = 0, menu_choice = -1, player_choose = -1, max_matches = 1, begin_play = 0, next_player = 0, total_cards = 0, points = 0, rises = 0;
@@ -240,10 +241,12 @@ int main(int argc, char const *argv[])
                             }
                             else
                             {
+                                ui.clear_screen();
+                                ui.title_bar("Truco++ - Draw");
                                 if(round_number == 0)
                                 {
-                                    teams[0].get_strongest_card(m.get_vira());
-                                    teams[1].get_strongest_card(m.get_vira());
+                                    sc1 = teams[0].get_strongest_card(m.get_vira());
+                                    sc2 = teams[1].get_strongest_card(m.get_vira());
                                     this_thread::sleep_for(chrono::seconds(4));
                                 }
                                 else if(round_number == 1)
@@ -269,7 +272,6 @@ int main(int argc, char const *argv[])
                                         partial_t1++;
                                     }
                                 }
-                                cout << "DRAW" << endl;
                             }
                             round_number++;
                         }
