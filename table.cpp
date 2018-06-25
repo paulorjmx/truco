@@ -39,19 +39,27 @@ void Table::set_vira(Card c)
     this->vira = c;
 }
 
-string Table::display_table()
+string Table::display_cards()
 {
     string output;
-    // output.push_back(this->vira.print_symbol());
-    // output.push_back(this->vira.print_naipe());
-    cout << setfill(' ') << setw(50) << "Vira " << this->vira.print_symbol() << this->vira.print_naipe() << endl;
     for(int i = 0; i < 4; i++)
     {
-        output.push_back(this->cards[i].print_symbol());
-        output.push_back(this->cards[i].print_naipe());
-        output += " ";
+        if(this->cards[i].get_symbol() != -1)
+        {
+            output.push_back(this->cards[i].print_symbol());
+            output.push_back(this->cards[i].print_naipe());
+            output += " ";
+        }
     }
+    return output;
+}
 
+string Table::display_vira()
+{
+    string output;
+    output = "Vira ";
+    output.push_back(this->vira.print_symbol());
+    output.push_back(this->vira.print_naipe());
     return output;
 }
 

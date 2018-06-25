@@ -18,9 +18,9 @@ int main(int argc, char const *argv[])
     Table m;
     Team teams[2]; // Team[0] e o time do jogador humano
     random_device rd;
-    bool game_over = false, round_over = false, trucado = false;
+    bool game_over = false, trucado = false, t1_first_blood = false, t1_give = false, t2_give = false;
     int cpu_choice = 0, menu_choice = -1, player_choose = -1, max_matches = 1, begin_play = 0, next_player = 0, total_cards = 0, points = 0, rises = 0;
-    int partial_t1 = 0, partial_t2 = 0; // Variaveis para guardar os resultados parciais da rodada
+    int round_number = 0, partial_t1 = 0, partial_t2 = 0; // Variaveis para guardar os resultados parciais da rodada
     string *menu_content = NULL, *option_content = NULL, *what_do = NULL;
     menu_content = new string[3];
     option_content = new string[3];
@@ -47,10 +47,15 @@ int main(int argc, char const *argv[])
         {
             // while(max_matches > 0)
             // {
+                begin_play = 0;
                 while(teams[0].get_points() < 12 && teams[1].get_points() < 12)
                 {
                     trucado = false;
-                    round_over = false;
+                    t1_first_blood = false;
+                    t1_give = false;
+                    t2_give = false;
+                    round_number = 0;
+                    rises = 0;
                     next_player = begin_play;
                     ui.clear_screen();
                     ui.title_bar("Truco++");
@@ -72,10 +77,13 @@ int main(int argc, char const *argv[])
                     teams[1].set_card(1, baralho.get_card_top());
                     teams[1].set_card(1, baralho.get_card_top());
                     teams[1].set_card(1, baralho.get_card_top());
+                    m.clear();
                     m.set_vira(baralho.get_card_top());
                     this_thread::sleep_for(chrono::seconds(1));
                     points = 1;
-                    while(round_over != true && partial_t1 < 2 && partial_t2 < 2)
+                    partial_t1 = 0;
+                    partial_t2 = 0;
+                    while(round_number < 3 && partial_t1 != 2 && partial_t2 != 2 && t1_give != true && t2_give != true)
                     {
                         if(m.get_cards_on() < 4)
                         {
@@ -83,8 +91,9 @@ int main(int argc, char const *argv[])
                             {
                                 ui.clear_screen();
                                 ui.title_bar("Truco++");
+                                ui.text_box(m.display_vira());
                                 ui.text_box("Cards in the table:");
-                                // ui.text_box(m.display_table());
+                                ui.text_box(m.display_cards());
                                 ui.text_box("Choose one card below");
                                 ui.menu_choose_card(teams[0].display_player_card(0));
                                 if(trucado != true)
@@ -102,6 +111,7 @@ int main(int argc, char const *argv[])
                                 {
                                     trucado = true;
                                     rises++;
+                                    round_number--;
                                     while((rises * 3) < 12) // Enquanto aumentar os pontos
                                     {
                                         cpu_choice = rd() % 3;
@@ -116,30 +126,34 @@ int main(int argc, char const *argv[])
                                         else if(cpu_choice == 2)
                                         {
                                             rises++;
-                                            ui.clear_screen();
-                                            ui.title_bar("Truco++");
-                                            ui.text_box("The opponent rises truco. What you do?");
-                                            player_choose = ui.menu_box(3, what_do);
-                                            if(player_choose == 1)
+                                            if((rises * 3) < 12)
                                             {
-                                                rises++;
-                                                break;
-                                            }
-                                            else if(player_choose == 2)
-                                            {
-                                                rises++;
-                                            }
-                                            else
-                                            {
-                                                rises--;
-                                                round_over = true;
-                                                break;
+                                                ui.clear_screen();
+                                                ui.title_bar("Truco++");
+                                                ui.text_box("The opponent rises truco. What you do?");
+                                                player_choose = ui.menu_box(3, what_do);
+                                                if(player_choose == 0)
+                                                {
+                                                    break;
+                                                }
+                                                else if(player_choose == 1)
+                                                {
+                                                    rises++;
+                                                }
+                                                else
+                                                {
+                                                    rises--;
+                                                    round_number = 3;
+                                                    t1_give = true;
+                                                    break;
+                                                }
                                             }
                                         }
                                         else
                                         {
                                             rises--;
-                                            round_over = true;
+                                            round_number = 3;
+                                            t2_give = true;
                                             break;
                                         }
                                     }
@@ -205,40 +219,84 @@ int main(int argc, char const *argv[])
                         }
                         else // Calcula o resultado da rodada
                         {
-                            if(trucado != false)
-                            {
-                                points = (rises * 3);
-                            }
-                            ui.text_box(m.display_table());
+                            ui.clear_screen();
+                            ui.title_bar("Truco++");
+                            ui.text_box(m.display_vira());
+                            ui.text_box("Results:");
+                            ui.text_box(m.display_cards());
+                            this_thread::sleep_for(chrono::seconds(3));
                             next_player = m.calculate_round_winner();
                             if(next_player != -1)
                             {
                                 if((next_player % 2) == 0)
                                 {
-                                    teams[0].set_points(points);
+                                    if(round_number == 0) t1_first_blood = true;
                                     partial_t1++;
-                                    cout << "You TEAM WIN TH TURN";
                                 }
                                 else
                                 {
-                                    teams[1].set_points(points);
                                     partial_t2++;
-                                    cout << "AWAY TEAM WIN TH TURN";
                                 }
                             }
                             else
                             {
+                                if(round_number == 0)
+                                {
+                                    teams[0].get_strongest_card(m.get_vira());
+                                    teams[1].get_strongest_card(m.get_vira());
+                                    this_thread::sleep_for(chrono::seconds(4));
+                                }
+                                else if(round_number == 1)
+                                {
+                                    if(t1_first_blood != true)
+                                    {
+                                        partial_t2++;
+                                    }
+                                    else
+                                    {
+                                        partial_t1++;
+                                    }
+                                    round_number = 3;
+                                }
+                                if(round_number == 2 && (partial_t1 == partial_t2))
+                                {
+                                    if(t1_first_blood != true)
+                                    {
+                                        partial_t2++;
+                                    }
+                                    else
+                                    {
+                                        partial_t1++;
+                                    }
+                                }
                                 cout << "DRAW" << endl;
                             }
-                            cin >> partial_t1;
+                            round_number++;
                         }
                     }
-                    break;
-                }
-                baralho.create();
-                baralho.random_shuffle();
-                begin_play++;
+                    if(trucado != false)
+                    {
+                        points = (rises * 3);
+                    }
+                    if(partial_t1 > partial_t2 || t2_give != false)
+                    {
+                        teams[0].set_points(teams[0].get_points() + points);
+                    }
+                    else
+                    {
+                        teams[1].set_points(teams[1].get_points() + points);
+                    }
+                    ui.clear_screen();
+                    ui.title_bar("Truco++ - Partial Score");
+                    ui.text_box("Your team: " +to_string(teams[0].get_points())+ " points");
+                    ui.text_box("Away team: " +to_string(teams[1].get_points())+ " points");
+                    this_thread::sleep_for(chrono::seconds(4));
+                    begin_play++;
+                    baralho.create();
+                } // Quando um dos dois times obtiverem 12 pontos
                 max_matches--;
+                teams[0].set_points(0);
+                teams[1].set_points(0);
             // }
         }
         else if(menu_choice == 1)
