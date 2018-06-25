@@ -60,6 +60,95 @@ void Team::display_player_name(unsigned int player_num)
     cout << this->players[player_num].get_name();
 }
 
+void Team::get_strongest_card(Card vira)
+{
+    Card sc1, sc2; // Strongest card; p1, p2
+    short int manilha = -1, position_1 = 0, position_2 = 0;
+    if(vira.get_symbol() == 10) manilha = 1;
+    else manilha = (vira.get_symbol() + 1);
+    sc1 = this->players[0].show_card(0);
+    sc2 = this->players[1].show_card(0);
+    for(int i = 1; i < this->remaining_cards(0); i++)
+    {
+        if(sc1.get_symbol() == manilha || this->players[0].show_card(i).get_symbol() == manilha)
+        {
+            if(sc1.get_symbol() == manilha && this->players[0].show_card(i).get_symbol() == manilha)
+            {
+                if(this->players[0].show_card(i).get_naipe() > sc1.get_naipe())
+                {
+                    sc1 = this->players[0].show_card(i);
+                    position_1 = i;
+                }
+            }
+            else if(this->players[0].show_card(i).get_symbol() == manilha)
+            {
+                sc1 = this->players[0].show_card(i);
+                position_1 = i;
+            }
+        }
+        else
+        {
+            if(sc1.get_symbol() > 3)
+            {
+                if(this->players[0].show_card(i).get_symbol() >= 1 && this->players[0].show_card(i).get_symbol() <= 3)
+                {
+                    sc1 = this->players[0].show_card(i);
+                    position_1 = i;
+                }
+                else
+                {
+                    if(sc1.get_symbol() < this->players[0].show_card(i).get_symbol())
+                    {
+                        sc1 = this->players[0].show_card(i);
+                        position_1 = i;
+                    }
+                }
+            }
+        }
+    }
+
+    for(int i = 1; i < this->remaining_cards(1); i++)
+    {
+        if(sc2.get_symbol() == manilha || this->players[1].show_card(i).get_symbol() == manilha)
+        {
+            if(sc2.get_symbol() == manilha && this->players[1].show_card(i).get_symbol() == manilha)
+            {
+                if(this->players[1].show_card(i).get_naipe() > sc2.get_naipe())
+                {
+                    sc2 = this->players[1].show_card(i);
+                    position_1 = i;
+                }
+            }
+            else if(this->players[1].show_card(i).get_symbol() == manilha)
+            {
+                sc2 = this->players[1].show_card(i);
+                position_1 = i;
+            }
+        }
+        else
+        {
+            if(sc2.get_symbol() > 3)
+            {
+                if(this->players[1].show_card(i).get_symbol() >= 1 && this->players[1].show_card(i).get_symbol() <= 3)
+                {
+                    sc2 = this->players[1].show_card(i);
+                    position_1 = i;
+                }
+                else
+                {
+                    if(sc2.get_symbol() < this->players[1].show_card(i).get_symbol())
+                    {
+                        sc2 = this->players[1].show_card(i);
+                        position_1 = i;
+                    }
+                }
+            }
+        }
+    }
+
+    cout << "Mais fortes: " << sc1.print_symbol() << sc1.print_naipe() << " " << sc2.print_symbol() << sc2.print_naipe() << endl;
+}
+
 Team::~Team()
 {
     this->points = 0;
