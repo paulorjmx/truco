@@ -19,7 +19,6 @@ void Deck::create()
 {
     this->shuffled = false;
     this->deck.clear();
-    this->deck.reserve(40);
     char symbols[10] = { 'A', '2', '3', '4', '5', '6', '7', 'Q', 'J', 'K' };
     Card::Naipe naipes[4] = { Card::COPAS, Card::ESPADA, Card::OUROS, Card::PAUS}; // Copa, Espada, Ouros e Paus
     for(int i = 0; i < 10; i++)
