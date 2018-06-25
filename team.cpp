@@ -60,9 +60,9 @@ void Team::display_player_name(unsigned int player_num)
     cout << this->players[player_num].get_name();
 }
 
-void Team::get_strongest_card(Card vira)
+Card Team::get_strongest_card(Card vira)
 {
-    Card sc1, sc2; // Strongest card; p1, p2
+    Card sc1, sc2, b; // Strongest card; p1, p2
     short int manilha = -1, position_1 = 0, position_2 = 0;
     if(vira.get_symbol() == 10) manilha = 1;
     else manilha = (vira.get_symbol() + 1);
@@ -116,13 +116,13 @@ void Team::get_strongest_card(Card vira)
                 if(this->players[1].show_card(i).get_naipe() > sc2.get_naipe())
                 {
                     sc2 = this->players[1].show_card(i);
-                    position_1 = i;
+                    position_2 = i;
                 }
             }
             else if(this->players[1].show_card(i).get_symbol() == manilha)
             {
                 sc2 = this->players[1].show_card(i);
-                position_1 = i;
+                position_2 = i;
             }
         }
         else
@@ -132,21 +132,66 @@ void Team::get_strongest_card(Card vira)
                 if(this->players[1].show_card(i).get_symbol() >= 1 && this->players[1].show_card(i).get_symbol() <= 3)
                 {
                     sc2 = this->players[1].show_card(i);
-                    position_1 = i;
+                    position_2 = i;
                 }
                 else
                 {
                     if(sc2.get_symbol() < this->players[1].show_card(i).get_symbol())
                     {
                         sc2 = this->players[1].show_card(i);
-                        position_1 = i;
+                        position_2 = i;
                     }
                 }
             }
         }
     }
 
-    cout << "Mais fortes: " << sc1.print_symbol() << sc1.print_naipe() << " " << sc2.print_symbol() << sc2.print_naipe() << endl;
+    sc1 = this->get_card(0, position_1);
+    sc2 = this->get_card(1, position_2);
+    if(sc1.get_symbol() == manilha || sc2.get_symbol() == manilha)
+    {
+        if(sc1.get_symbol() == manilha && sc2.get_symbol() == manilha)
+        {
+            if(sc2.get_naipe() > sc1.get_naipe())
+            {
+                b = sc2;
+            }
+            else
+            {
+                b = sc1;
+            }
+        }
+        else if(sc2.get_symbol() == manilha)
+        {
+            b = sc2;
+        }
+    }
+    else
+    {
+        if(sc1.get_symbol() > 3)
+        {
+            if(sc2.get_symbol() >= 1 && sc2.get_symbol() <= 3)
+            {
+                b = sc2;
+            }
+            else
+            {
+                if(sc1.get_symbol() < sc2.get_symbol())
+                {
+                    b = sc2;
+                }
+                else
+                {
+                    b = sc1;
+                }
+            }
+        }
+        else
+        {
+            b = sc1;
+        }
+    }
+    return b;
 }
 
 Team::~Team()
