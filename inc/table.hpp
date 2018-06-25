@@ -16,8 +16,10 @@
                 Table();
                 void set_card(Card c, unsigned int position);
                 void set_vira(Card c);
+                Card get_vira();
                 void clear();
-                string display_table();
+                string display_cards();
+                string display_vira();
                 unsigned int get_cards_on();
                 int calculate_round_winner();
                 ~Table();
