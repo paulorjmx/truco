@@ -39,6 +39,11 @@ void Table::set_vira(Card c)
     this->vira = c;
 }
 
+Card Table::get_vira()
+{
+    return this->vira;
+}
+
 string Table::display_cards()
 {
     string output;
@@ -48,8 +53,12 @@ string Table::display_cards()
         {
             output.push_back(this->cards[i].print_symbol());
             output.push_back(this->cards[i].print_naipe());
-            output += " ";
         }
+        else
+        {
+            output.push_back('?');
+        }
+        output += " ";
     }
     return output;
 }
@@ -70,7 +79,6 @@ int Table::calculate_round_winner()
     if(this->vira.get_symbol() == 10) manilha = 1;
     else manilha = (this->vira.get_symbol() + 1);
     tmp_best_card = this->cards[0];
-    cout << manilha << endl;
     while(i < 4)
     {
         if((tmp_best_card.get_symbol() == manilha) || (this->cards[i].get_symbol() == manilha))
@@ -166,6 +174,11 @@ int Table::calculate_round_winner()
     this->clear();
     return tmp_winner;
 }
+
+// void Table::get_strongest_card(Team *t)
+// {
+//
+// }
 
 Table::~Table()
 {
