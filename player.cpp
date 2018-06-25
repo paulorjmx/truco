@@ -63,6 +63,19 @@ Card Player::get_card(unsigned int position)
     return c;
 }
 
+Card Player::show_card(unsigned int position)
+{
+    Card c;
+    if(this->mao.size() > 0)
+    {
+        if(position >= 0 && position < 3)
+        {
+            c = this->mao[position];
+        }
+    }
+    return c;
+}
+
 Player::~Player()
 {
     this->mao.clear();
