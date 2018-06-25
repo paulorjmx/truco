@@ -21,7 +21,7 @@
                 unsigned int remaining_cards(unsigned int player_num);
                 void display_player_name(unsigned int player_num);
                 string display_player_card(unsigned int player_num);
-                void get_strongest_card(Card vira);
+                Card get_strongest_card(Card vira);
                 friend istream &operator>>(istream &is, Team &obj);
                 ~Team();
         };
