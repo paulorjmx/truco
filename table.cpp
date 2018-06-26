@@ -44,23 +44,41 @@ Card Table::get_vira()
     return this->vira;
 }
 
-string Table::display_cards()
+void Table::display_cards(Team *t)
 {
-    string output;
-    for(int i = 0; i < 4; i++)
+    if(this->cards[0].get_symbol() != -1)
     {
-        if(this->cards[i].get_symbol() != -1)
-        {
-            output.push_back(this->cards[i].print_symbol());
-            output.push_back(this->cards[i].print_naipe());
-        }
-        else
-        {
-            output.push_back('?');
-        }
-        output += " ";
+        cout << setfill(' ') << setw(32 + t[0].display_player_name(0).length()) << t[0].display_player_name(0) << ": " << this->cards[0].print_symbol() << this->cards[0].print_naipe() << endl;
     }
-    return output;
+    else
+    {
+        cout << setfill(' ') << setw(32 + t[0].display_player_name(0).length()) << t[0].display_player_name(0) << ": ?" << endl;
+    }
+    if(this->cards[1].get_symbol() != -1)
+    {
+        cout << setfill(' ') << setw(32 + t[1].display_player_name(0).length()) << t[1].display_player_name(0) << ": " << this->cards[1].print_symbol() << this->cards[1].print_naipe() << endl;
+    }
+    else
+    {
+        cout << setfill(' ') << setw(32 + t[1].display_player_name(0).length()) << t[1].display_player_name(0) << ": ?" << endl;
+    }
+    if(this->cards[2].get_symbol() != -1)
+    {
+        cout << setfill(' ') << setw(32 + t[0].display_player_name(1).length()) << t[0].display_player_name(1) << "(PART): " << this->cards[2].print_symbol() << this->cards[2].print_naipe() << endl;
+    }
+    else
+    {
+        cout << setfill(' ') << setw(32 + t[0].display_player_name(1).length()) << t[0].display_player_name(1) << "(PART): ?" << endl;
+    }
+    if(this->cards[3].get_symbol() != -1)
+    {
+        cout << setfill(' ') << setw(32 + t[1].display_player_name(1).length()) << t[1].display_player_name(1) << ": " << this->cards[3].print_symbol() << this->cards[3].print_naipe() << endl;
+    }
+    else
+    {
+        cout << setfill(' ') << setw(32 + t[1].display_player_name(1).length()) << t[1].display_player_name(1) << ": ?" << endl;
+    }
+    cout << endl;
 }
 
 string Table::display_vira()
@@ -75,9 +93,8 @@ string Table::display_vira()
 int Table::calculate_round_winner()
 {
     Card tmp_best_card;
-    short int tmp_winner = 0, i = 1, manilha = 0;
-    if(this->vira.get_symbol() == 10) manilha = 1;
-    else manilha = (this->vira.get_symbol() + 1);
+    short int tmp_winner = 0, i = 1, manilha = this->vira.get_symbol() + 1;
+    if(this->vira.get_symbol() >= 10) manilha = 1;
     tmp_best_card = this->cards[0];
     while(i < 4)
     {
@@ -116,7 +133,6 @@ int Table::calculate_round_winner()
                             if(i != 2)
                             {
                                 tmp_winner = -1;
-                                break;
                             }
                         }
                         else
@@ -126,13 +142,11 @@ int Table::calculate_round_winner()
                                 if(i != 3)
                                 {
                                     tmp_winner = -1;
-                                    break;
                                 }
                             }
                             else if(tmp_winner == 2)
                             {
                                 tmp_winner = -1;
-                                break;
                             }
                         }
                     }
@@ -157,7 +171,6 @@ int Table::calculate_round_winner()
                         if(i != 2)
                         {
                             tmp_winner = -1;
-                            break;
                         }
                     }
                     else
@@ -167,13 +180,11 @@ int Table::calculate_round_winner()
                             if(i != 3)
                             {
                                 tmp_winner = -1;
-                                break;
                             }
                         }
                         else if(tmp_winner == 2)
                         {
                             tmp_winner = -1;
-                            break;
                         }
                     }
                 }
@@ -187,21 +198,25 @@ int Table::calculate_round_winner()
 
 int Table::decide_draw(Card strong_card1, Card strong_card2)
 {
-    int tmp_winner = -1, manilha = 0;
-    if(this->vira.get_symbol() == 10) manilha = 1;
-    else manilha = (this->vira.get_symbol() + 1);
+    short int manilha = this->vira.get_symbol() + 1;
+    int tmp_winner = -1;
+    if(this->vira.get_symbol() >= 10) manilha = 1;
     if((strong_card1.get_symbol() == manilha) || (strong_card2.get_symbol() == manilha))
     {
         if((strong_card1.get_symbol() == manilha) && (strong_card2.get_symbol() == manilha))
         {
             if(strong_card1.get_naipe() < strong_card2.get_naipe())
             {
-                tmp_winner = 1;
+                tmp_winner = 2;
             }
         }
         else if((strong_card2.get_symbol() == manilha))
         {
             tmp_winner = 2;
+        }
+        else
+        {
+            tmp_winner = 1;
         }
     }
     else
