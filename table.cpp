@@ -129,6 +129,11 @@ int Table::calculate_round_winner()
                                     break;
                                 }
                             }
+                            else if(tmp_winner == 2)
+                            {
+                                tmp_winner = -1;
+                                break;
+                            }
                         }
                     }
                 }
@@ -165,6 +170,11 @@ int Table::calculate_round_winner()
                                 break;
                             }
                         }
+                        else if(tmp_winner == 2)
+                        {
+                            tmp_winner = -1;
+                            break;
+                        }
                     }
                 }
             }
@@ -175,10 +185,71 @@ int Table::calculate_round_winner()
     return tmp_winner;
 }
 
-// void Table::get_strongest_card(Team *t)
-// {
-//
-// }
+int Table::decide_draw(Card strong_card1, Card strong_card2)
+{
+    int tmp_winner = -1, manilha = 0;
+    if(this->vira.get_symbol() == 10) manilha = 1;
+    else manilha = (this->vira.get_symbol() + 1);
+    if((strong_card1.get_symbol() == manilha) || (strong_card2.get_symbol() == manilha))
+    {
+        if((strong_card1.get_symbol() == manilha) && (strong_card2.get_symbol() == manilha))
+        {
+            if(strong_card1.get_naipe() < strong_card2.get_naipe())
+            {
+                tmp_winner = 1;
+            }
+        }
+        else if((strong_card2.get_symbol() == manilha))
+        {
+            tmp_winner = 2;
+        }
+    }
+    else
+    {
+        if(strong_card1.get_symbol() >= 1 && strong_card1.get_symbol() <= 3)
+        {
+            if(strong_card2.get_symbol() >= 1 && strong_card2.get_symbol() <= 3)
+            {
+                if(strong_card2.get_symbol() > strong_card1.get_symbol())
+                {
+                    tmp_winner = 2;
+                }
+                else if(strong_card2.get_symbol() < strong_card1.get_symbol())
+                {
+                    tmp_winner = 1;
+                }
+                else
+                {
+                    tmp_winner = -1;
+                }
+            }
+            else
+            {
+                tmp_winner = 1;
+            }
+        }
+        else
+        {
+            if(strong_card2.get_symbol() >= 1 && strong_card2.get_symbol() <= 3)
+            {
+                tmp_winner = 2;
+            }
+            else if(strong_card1.get_symbol() < strong_card2.get_symbol())
+            {
+                tmp_winner = 2;
+            }
+            else if(strong_card1.get_symbol() > strong_card2.get_symbol())
+            {
+                tmp_winner = 1;
+            }
+            else
+            {
+                 tmp_winner = -1;
+            }
+        }
+    }
+    return tmp_winner;
+}
 
 Table::~Table()
 {
