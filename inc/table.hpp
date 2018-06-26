@@ -22,6 +22,7 @@
                 string display_vira();
                 unsigned int get_cards_on();
                 int calculate_round_winner();
+                int decide_draw(Card strong_card1, Card strong_card2);
                 ~Table();
         };
 #endif
