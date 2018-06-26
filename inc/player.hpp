@@ -4,13 +4,14 @@
         #include <vector>
         #include <string>
         #include "card.hpp"
+        #include "person.hpp"
 
         using namespace std;
 
-        class Player
+        class Player: public Person
         {
             private:
-                string name;
+                // string name;
                 vector<Card> mao;
 
             public:
