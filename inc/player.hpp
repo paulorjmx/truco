@@ -23,6 +23,7 @@
                 Card show_card(unsigned int position);
                 string display_card(unsigned int position);
                 unsigned int card_quantity();
+                void clear();
                 friend istream &operator>>(istream &is, Player &p);
                 ~Player();
         };
