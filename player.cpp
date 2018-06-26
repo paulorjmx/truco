@@ -12,6 +12,11 @@ Player::Player()
     this->mao.reserve(3);
 }
 
+void Player::clear()
+{
+    this->mao.clear();
+}
+
 void Player::set_name(string name)
 {
     this->name = name;
