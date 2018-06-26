@@ -100,7 +100,7 @@ int main(int argc, char const *argv[])
                                 m.display_cards(teams);
                                 ui.text_box("Choose one card below");
                                 ui.menu_choose_card(teams[0].display_player_card(0));
-                                if(trucado != true)
+                                if(trucado != true && teams[0].get_points() < 11)
                                 {
                                     ui.text_box("[4] Truco!");
                                 }
