@@ -21,11 +21,12 @@ int main(int argc, char const *argv[])
     random_device rd;
     bool game_over = false, trucado = false, t1_first_blood = false, t1_give = false, t2_give = false, draw = false;
     int cpu_choice = 0, menu_choice = -1, player_choose = -1, max_matches = 1, begin_play = 0, next_player = 0, total_cards = 0, points = 0, rises = 0;
-    int round_number = 0, partial_t1 = 0, partial_t2 = 0, it = 0; // Variaveis para guardar os resultados parciais da rodada
-    string *menu_content = NULL, *option_content = NULL, *what_do = NULL, menu_yes_no = NULL;
+    int round_number = 0, partial_t1 = 0, partial_t2 = 0, it = 0, accept = 0; // Variaveis para guardar os resultados parciais da rodada
+    string *menu_content = NULL, *option_content = NULL, *what_do = NULL, *menu_yes_no = NULL;
     menu_content = new string[3];
     option_content = new string[3];
     what_do = new string[3];
+    menu_yes_no = new string[2];
 
     menu_content[0] = "Play Truco++";
     menu_content[1] = "Options";
@@ -49,9 +50,12 @@ int main(int argc, char const *argv[])
         menu_choice = ui.menu_box(3, menu_content);
         if(menu_choice == 0)
         {
-            // while(max_matches > 0)
-            // {
+            while(max_matches > 0)
+            {
+                teams[0].set_points(0);
+                teams[1].set_points(0);
                 begin_play = 0;
+                accept = 1;
                 while(teams[0].get_points() < 12 && teams[1].get_points() < 12)
                 {
                     trucado = false;
@@ -92,7 +96,7 @@ int main(int argc, char const *argv[])
                     partial_t2 = 0;
                     while(round_number < 3 && partial_t1 != 2 && partial_t2 != 2 && t1_give != true && t2_give != true)
                     {
-                        if(teams[0].get_points() == 11)
+                        if(teams[0].get_points() == 11 && accept != 0)
                         {
                             ui.title_bar("Truco++");
                             ui.text_box(m.display_vira());
@@ -101,8 +105,8 @@ int main(int argc, char const *argv[])
                             ui.text_box("Your cards:");
                             ui.text_box(teams[0].display_player_card(0));
                             ui.text_box("Do you accept to continue?");
-                            menu_choice = ui.menu_box(2, menu_yes_no);
-                            if(menu_choice == 0)
+                            accept = ui.menu_box(2, menu_yes_no);
+                            if(accept == 0)
                             {
                                 points = 3;
                             }
@@ -389,9 +393,21 @@ int main(int argc, char const *argv[])
                     baralho.create();
                 } // Quando um dos dois times obtiverem 12 pontos
                 max_matches--;
-                teams[0].set_points(0);
-                teams[1].set_points(0);
-            // }
+            }
+            if(teams[0].get_points() >= 12)
+            {
+                ui.clear_screen();
+                ui.title_bar("Truco++ - Final Score");
+                ui.text_box("Your team wins!");
+
+            }
+            else if(teams[1].get_points() >= 12)
+            {
+                ui.clear_screen();
+                ui.title_bar("Truco++ - Final Score");
+                ui.text_box("Away team wins!");
+            }
+            this_thread::sleep_for(chrono::seconds(4));
         }
         else if(menu_choice == 1)
         {
@@ -409,6 +425,7 @@ int main(int argc, char const *argv[])
                 ui.title_bar("Options - Edit name of players");
                 ui.text_box("Type the name that you want the other players to have");
                 cin >> teams[1];
+                menu_choice = -1;
             }
             else if(menu_choice == 1)
             {
