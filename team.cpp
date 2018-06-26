@@ -197,6 +197,12 @@ Card Team::get_strongest_card(Card vira)
     return b;
 }
 
+void Team::clear()
+{
+    this->players[0].clear();
+    this->players[1].clear();
+}
+
 Team::~Team()
 {
     this->points = 0;
