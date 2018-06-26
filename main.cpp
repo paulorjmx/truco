@@ -67,6 +67,8 @@ int main(int argc, char const *argv[])
                     ui.clear_screen();
                     ui.title_bar("Truco++");
                     ui.text_box("Distributing cards...");
+                    teams[0].clear();
+                    teams[1].clear();
                     teams[0].set_card(0, baralho.get_card_top());
                     teams[0].set_card(0, baralho.get_card_top());
                     teams[0].set_card(0, baralho.get_card_top());
@@ -232,7 +234,7 @@ int main(int argc, char const *argv[])
                             ui.text_box(m.display_vira());
                             ui.text_box("Results:");
                             ui.text_box(m.display_cards());
-                            this_thread::sleep_for(chrono::seconds(3));
+                            this_thread::sleep_for(chrono::seconds(5));
                             next_player = m.calculate_round_winner();
                             if(next_player != -1)
                             {
@@ -250,6 +252,7 @@ int main(int argc, char const *argv[])
                             {
                                 ui.clear_screen();
                                 ui.title_bar("Truco++ - Draw");
+                                ui.text_box(m.display_vira());
                                 ui.text_box("This round draw. Let choose the strongest card of each player...");
                                 if(round_number == 0)
                                 {
@@ -274,6 +277,7 @@ int main(int argc, char const *argv[])
                                     {
                                         ui.clear_screen();
                                         ui.title_bar("Truco++ - Draw");
+                                        ui.text_box(m.display_vira());
                                         ui.text_box("This round draw again. Let choose the strongest card of each player...");
                                         sc1 = teams[0].get_strongest_card(m.get_vira());
                                         sc2 = teams[1].get_strongest_card(m.get_vira());
