@@ -19,9 +19,9 @@ int main(int argc, char const *argv[])
     Team teams[2]; // Team[0] e o time do jogador humano
     Card sc1, sc2; // Cartas mais fortes dos times 1 e 2, respectivamente, para a condicao de empate
     random_device rd;
-    bool game_over = false, trucado = false, t1_first_blood = false, t1_give = false, t2_give = false;
+    bool game_over = false, trucado = false, t1_first_blood = false, t1_give = false, t2_give = false, draw = false;
     int cpu_choice = 0, menu_choice = -1, player_choose = -1, max_matches = 1, begin_play = 0, next_player = 0, total_cards = 0, points = 0, rises = 0;
-    int round_number = 0, partial_t1 = 0, partial_t2 = 0; // Variaveis para guardar os resultados parciais da rodada
+    int round_number = 0, partial_t1 = 0, partial_t2 = 0, it = 0; // Variaveis para guardar os resultados parciais da rodada
     string *menu_content = NULL, *option_content = NULL, *what_do = NULL;
     menu_content = new string[3];
     option_content = new string[3];
@@ -42,7 +42,7 @@ int main(int argc, char const *argv[])
     {
         ui.clear_screen();
         ui.title_bar("Welcome to Truco++");
-        ui.text_box("The best brazilian card game ever!");
+        ui.text_box("An another card game!");
         menu_choice = ui.menu_box(3, menu_content);
         if(menu_choice == 0)
         {
@@ -55,6 +55,7 @@ int main(int argc, char const *argv[])
                     t1_first_blood = false;
                     t1_give = false;
                     t2_give = false;
+                    draw = false;
                     round_number = 0;
                     rises = 0;
                     next_player = begin_play;
@@ -113,6 +114,7 @@ int main(int argc, char const *argv[])
                                     trucado = true;
                                     rises++;
                                     round_number--;
+                                    it = 0;
                                     while((rises * 3) < 12) // Enquanto aumentar os pontos
                                     {
                                         cpu_choice = rd() % 3;
@@ -155,8 +157,13 @@ int main(int argc, char const *argv[])
                                             rises--;
                                             round_number = 3;
                                             t2_give = true;
+                                            if(it == 0)
+                                            {
+                                                trucado = false;
+                                            }
                                             break;
                                         }
+                                        it++;
                                     }
                                 }
                                 else
@@ -243,11 +250,56 @@ int main(int argc, char const *argv[])
                             {
                                 ui.clear_screen();
                                 ui.title_bar("Truco++ - Draw");
+                                ui.text_box("This round draw. Let choose the strongest card of each player...");
                                 if(round_number == 0)
                                 {
+                                    partial_t1++;
+                                    partial_t2++;
                                     sc1 = teams[0].get_strongest_card(m.get_vira());
                                     sc2 = teams[1].get_strongest_card(m.get_vira());
-                                    this_thread::sleep_for(chrono::seconds(4));
+                                    this_thread::sleep_for(chrono::seconds(6));
+                                    it = m.decide_draw(sc1, sc2);
+                                    if(it != -1) // se não empatou novamente
+                                    {
+                                        if(it != 2) // Time 1 ganhou
+                                        {
+                                            partial_t1++;
+                                        }
+                                        else // Time 2 ganhou
+                                        {
+                                            partial_t2++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        ui.clear_screen();
+                                        ui.title_bar("Truco++ - Draw");
+                                        ui.text_box("This round draw again. Let choose the strongest card of each player...");
+                                        sc1 = teams[0].get_strongest_card(m.get_vira());
+                                        sc2 = teams[1].get_strongest_card(m.get_vira());
+                                        this_thread::sleep_for(chrono::seconds(6));
+                                        it = m.decide_draw(sc1, sc2);
+                                        if(it != -1) // se não empatou novamente
+                                        {
+                                            if(it != 2) // Time 1 ganhou
+                                            {
+                                                partial_t1++;
+                                            }
+                                            else // Time 2 ganhou
+                                            {
+                                                partial_t2++;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            ui.clear_screen();
+                                            ui.title_bar("Truco++ - Result");
+                                            ui.text_box("This round draw again. Neither teams get points.");
+                                            this_thread::sleep_for(chrono::seconds(4));
+                                            draw = true;
+                                        }
+                                    }
+                                    round_number = 3;
                                 }
                                 else if(round_number == 1)
                                 {
@@ -276,17 +328,20 @@ int main(int argc, char const *argv[])
                             round_number++;
                         }
                     }
-                    if(trucado != false)
+                    if(draw != true)
                     {
-                        points = (rises * 3);
-                    }
-                    if(partial_t1 > partial_t2 || t2_give != false)
-                    {
-                        teams[0].set_points(teams[0].get_points() + points);
-                    }
-                    else
-                    {
-                        teams[1].set_points(teams[1].get_points() + points);
+                        if(trucado != false)
+                        {
+                            points = (rises * 3);
+                        }
+                        if(partial_t1 > partial_t2 || t2_give != false)
+                        {
+                            teams[0].set_points(teams[0].get_points() + points);
+                        }
+                        else
+                        {
+                            teams[1].set_points(teams[1].get_points() + points);
+                        }
                     }
                     ui.clear_screen();
                     ui.title_bar("Truco++ - Partial Score");
