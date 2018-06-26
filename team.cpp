@@ -149,8 +149,8 @@ Card Team::get_strongest_card(Card vira)
 
     sc1 = this->get_card(0, position_1);
     sc2 = this->get_card(1, position_2);
-    cout << setfill(' ') << setw(30) << this->display_player_name(0) << ": " << sc1.print_symbol() << sc1.print_naipe() << endl;
-    cout << setfill(' ') << setw(30) << this->display_player_name(1) << ": " << sc2.print_symbol() << sc2.print_naipe() << endl;
+    cout << setfill(' ') << setw(32 + this->display_player_name(0).length()) << this->display_player_name(0) << ": " << sc1.print_symbol() << sc1.print_naipe() << endl;
+    cout << setfill(' ') << setw(32 + this->display_player_name(0).length()) << this->display_player_name(1) << ": " << sc2.print_symbol() << sc2.print_naipe() << endl;
     if(sc1.get_symbol() == manilha || sc2.get_symbol() == manilha)
     {
         if(sc1.get_symbol() == manilha && sc2.get_symbol() == manilha)
