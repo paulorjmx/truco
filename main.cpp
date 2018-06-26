@@ -22,7 +22,7 @@ int main(int argc, char const *argv[])
     bool game_over = false, trucado = false, t1_first_blood = false, t1_give = false, t2_give = false, draw = false;
     int cpu_choice = 0, menu_choice = -1, player_choose = -1, max_matches = 1, begin_play = 0, next_player = 0, total_cards = 0, points = 0, rises = 0;
     int round_number = 0, partial_t1 = 0, partial_t2 = 0, it = 0; // Variaveis para guardar os resultados parciais da rodada
-    string *menu_content = NULL, *option_content = NULL, *what_do = NULL;
+    string *menu_content = NULL, *option_content = NULL, *what_do = NULL, menu_yes_no = NULL;
     menu_content = new string[3];
     option_content = new string[3];
     what_do = new string[3];
@@ -38,6 +38,9 @@ int main(int argc, char const *argv[])
     what_do[0] = "Accept";
     what_do[1] = "Rises";
     what_do[2] = "Give Up!";
+
+    menu_yes_no[0] = "Yes";
+    menu_yes_no[1] = "No";
     while(game_over != true)
     {
         ui.clear_screen();
@@ -89,6 +92,26 @@ int main(int argc, char const *argv[])
                     partial_t2 = 0;
                     while(round_number < 3 && partial_t1 != 2 && partial_t2 != 2 && t1_give != true && t2_give != true)
                     {
+                        if(teams[0].get_points() == 11)
+                        {
+                            ui.title_bar("Truco++");
+                            ui.text_box(m.display_vira());
+                            ui.text_box("Cards of your partner:");
+                            ui.text_box(teams[0].display_player_card(1));
+                            ui.text_box("Your cards:");
+                            ui.text_box(teams[0].display_player_card(0));
+                            ui.text_box("Do you accept to continue?");
+                            menu_choice = ui.menu_box(2, menu_yes_no);
+                            if(menu_choice == 0)
+                            {
+                                points = 3;
+                            }
+                            else
+                            {
+                                partial_t2 = 2;
+                                break;
+                            }
+                        }
                         if(m.get_cards_on() < 4)
                         {
                             if((next_player % 4) == 0)
@@ -404,6 +427,7 @@ int main(int argc, char const *argv[])
             delete[] menu_content;
             delete[] option_content;
             delete[] what_do;
+            delete[] menu_yes_no;
             game_over = true;
         }
     }
