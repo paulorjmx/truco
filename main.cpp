@@ -16,7 +16,7 @@ int main(int argc, char const *argv[])
     UserInterface ui;
     Deck baralho;
     Table m;
-    Team teams[2]; // Team[0] e o time do jogador humano
+    Team teams[2] { {"Player1", "Partner"}, {"Player3", "Player4"} }; // Team[0] e o time do jogador humano
     Card sc1, sc2; // Cartas mais fortes dos times 1 e 2, respectivamente, para a condicao de empate
     random_device rd;
     bool game_over = false, trucado = false, t1_first_blood = false, t1_give = false, t2_give = false, draw = false;
@@ -97,7 +97,7 @@ int main(int argc, char const *argv[])
                                 ui.title_bar("Truco++");
                                 ui.text_box(m.display_vira());
                                 ui.text_box("Cards in the table:");
-                                ui.text_box(m.display_cards());
+                                m.display_cards(teams);
                                 ui.text_box("Choose one card below");
                                 ui.menu_choose_card(teams[0].display_player_card(0));
                                 if(trucado != true)
@@ -125,7 +125,7 @@ int main(int argc, char const *argv[])
                                             ui.clear_screen();
                                             ui.title_bar("Truco++");
                                             ui.text_box("The oppponent accpeted the truco!");
-                                            this_thread::sleep_for(chrono::seconds(2));
+                                            this_thread::sleep_for(chrono::seconds(3));
                                             break;
                                         }
                                         else if(cpu_choice == 2)
@@ -152,6 +152,13 @@ int main(int argc, char const *argv[])
                                                     t1_give = true;
                                                     break;
                                                 }
+                                            }
+                                            else
+                                            {
+                                                ui.clear_screen();
+                                                ui.title_bar("Truco++");
+                                                ui.text_box("The opponent rises truco.");
+                                                this_thread::sleep_for(chrono::seconds(3));
                                             }
                                         }
                                         else
@@ -233,7 +240,7 @@ int main(int argc, char const *argv[])
                             ui.title_bar("Truco++");
                             ui.text_box(m.display_vira());
                             ui.text_box("Results:");
-                            ui.text_box(m.display_cards());
+                            m.display_cards(teams);
                             this_thread::sleep_for(chrono::seconds(5));
                             next_player = m.calculate_round_winner();
                             if(next_player != -1)
@@ -253,7 +260,8 @@ int main(int argc, char const *argv[])
                                 ui.clear_screen();
                                 ui.title_bar("Truco++ - Draw");
                                 ui.text_box(m.display_vira());
-                                ui.text_box("This round draw. Let choose the strongest card of each player...");
+                                ui.text_box("This round draw.");
+                                ui.text_box("Let choose the strongest card of each player...");
                                 if(round_number == 0)
                                 {
                                     partial_t1++;
@@ -278,7 +286,8 @@ int main(int argc, char const *argv[])
                                         ui.clear_screen();
                                         ui.title_bar("Truco++ - Draw");
                                         ui.text_box(m.display_vira());
-                                        ui.text_box("This round draw again. Let choose the strongest card of each player...");
+                                        ui.text_box("This round draw again.");
+                                        ui.text_box("Let choose the strongest card of each player...");
                                         sc1 = teams[0].get_strongest_card(m.get_vira());
                                         sc2 = teams[1].get_strongest_card(m.get_vira());
                                         this_thread::sleep_for(chrono::seconds(6));
@@ -298,7 +307,8 @@ int main(int argc, char const *argv[])
                                         {
                                             ui.clear_screen();
                                             ui.title_bar("Truco++ - Result");
-                                            ui.text_box("This round draw again. Neither teams get points.");
+                                            ui.text_box("This round draw again.");
+                                            ui.text_box("Neither teams get points.");
                                             this_thread::sleep_for(chrono::seconds(4));
                                             draw = true;
                                         }
