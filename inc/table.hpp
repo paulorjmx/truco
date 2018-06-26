@@ -2,6 +2,7 @@
     #define TABLE_HPP
         #include <iostream>
         #include <string>
+        #include "team.hpp"
         #include "card.hpp"
 
         using namespace std;
@@ -18,7 +19,7 @@
                 void set_vira(Card c);
                 Card get_vira();
                 void clear();
-                string display_cards();
+                void display_cards(Team *t);
                 string display_vira();
                 unsigned int get_cards_on();
                 int calculate_round_winner();
