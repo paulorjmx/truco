@@ -54,7 +54,7 @@ void UserInterface::menu_choose_card(string cards)
         qt_cards++;
     }
     pos = 0;
-    cout << setfill(' ') << setw(CENTER) << "[0] " << cards.substr(pos, 2) << endl;
+    cout << setfill(' ') << setw(CENTER + 3) << "[0] " << cards.substr(pos, 2) << endl;
     for(i = 1; i < qt_cards; i++)
     {
         pos = cards.find(";", pos) + 1;
